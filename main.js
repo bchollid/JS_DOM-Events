@@ -1,47 +1,61 @@
 console.log("Script attached");
 /*----------- Exercise #1: SELECTING/MANIPULATING ELEMENTS -----------*/
 
-// Select Node #1 and change the text to: "I used the getElementById("node1") method to access this"
-
-// Select Node #2 and change the text to: "I used the getElementByClassName("node2") method to access this" */
-
-// Select ALL the h3 tags and change the text to: "I used the getElementByTagName("h3") method to access all of these" */
+document.getElementById("node1").innerText = "I used the getElementById('node1') method to access this";
+document.getElementsByClassName("node2")[0].innerText = "I used the getElementsByClassName('node2') method to access this";
+let h3Tags = document.getElementsByTagName("h3");
+for(let i = 0; i < h3Tags.length; i++){
+    h3Tags[i].innerText = "I used the getElementByTagName('h3') method to access all of these"
+}
 
 /*----------- Exercise #2: CREATING/APPENDING/INSERTING ELEMENTS/OBJECTS -----------*/
-
-// TODO: Create a paragraph element using this document.createElement() and put this text inside "This node was created using the createElement() method"
-
-// TODO: Append the created node to the parent node using the element.appendChild() method
-
-// TODO: Create a <a> element using this document.createElement() and put this text inside "I am a <a> tag"
-
-// BONUS: Add a link href to the <a>
-
-// TODO: Insert the created <a> in the parent but before the <p> you just created using the element.insertBefore() method
+let newPara = document.createElement("p");
+newPara.innerText = "This node was created using the createElement() method."
+let parentElement = document.getElementsByClassName("exercise-container exercise2")[0];
+parentElement.appendChild(newPara);
+let newAnchor = document.createElement("a");
+newAnchor.innerText = `I am a <a> tag`;
+newAnchor.href = "https://www.google.com/"
+parentElement.insertBefore(newAnchor, newPara);
 
 /*----------- Exercise #3: REMOVING/REPLACING ELEMENTS/OBJECTS -----------*/
 
-// TODO: Replace the "Child Node" with a new <p> element that reads "New Child Node"
-
-// TODO: Remove the "New Child Node"
+let oldChildNode = document.getElementById("N1");
+let newChildNode = document.createElement("p");
+newChildNode.innerText = "New Child Node"
+let theParent = document.getElementById("exercise-container3");
+theParent.replaceChild(newChildNode, oldChildNode);
+newChildNode.remove();
 
 /*----------- Exercise #4: LIST ITEMS ----------- */
-// Use the following array of values to generate a list on the DOM
 
 let list = [ "apples", "bananas", "carrots", "dragon fruit", "eggplant", "fish", "grapes", "honey", "ice bag", "juice (any kind)" ];
 
-
-// TODO: Create an unordered list element
-
-// TODO: Iterate over the array values, and create a list item element for each
-
-// TODO: Append the new list items to the unordered list element
-
-// TODO: Append the unordered list to the `div#container` under exercise 4 
+let newList = document.createElement("ul");
+let container = document.getElementById("container");
+container.appendChild(newList);
+list.forEach(function(item){
+    let newLi = document.createElement("li");
+    newLi.innerText = item;
+    newList.appendChild(newLi)
+})
 
 /*----------- Exercise #5: DOM EVENTS --------------*/
 
-// TODO: write a function called "show" which creates a new div with an alerting message to the user with this message
-// -> "Clicking the button triggers the onclick event, which calls the JS function show()... which alerts the user"
-// This div should be a 'modal' that covers the main content on the screen
-// BONUS: The modal popup should be able to be closed. Refactor for this functionality
+var button = document.getElementById("btn");
+var main = document.getElementsByClassName("root")[0];
+var exerciseContainer = document.getElementsByClassName("exercise-container exercise5")[0];
+
+button.onclick = show;
+
+
+function show(){
+    var alertDiv = document.createElement("div");
+    alertDiv.setAttribute('id', 'modal');
+    alertDiv.innerText = "Clicking the button triggers the onclick event, which calls the JS function show()... which alerts the user. Click anywhere to close.";
+    document.body.insertBefore(alertDiv, main);
+    var modal = document.getElementById("modal");
+    modal.addEventListener("click", function(){
+        alertDiv.remove();
+    })
+}
